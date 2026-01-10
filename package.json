@@ -1,0 +1,14 @@
+{
+  "name": "zuwa-bot",
+  "version": "1.0.0",
+  "description": "WhatsApp Bot Pairing",
+  "main": "pair.js",
+  "dependencies": {
+    "@whiskeysockets/baileys": "latest",
+    "pino": "latest",
+    "qrcode-terminal": "latest"
+  },
+  "scripts": {
+    "start": "node pair.js"
+  }
+}
