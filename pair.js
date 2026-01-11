@@ -2,23 +2,24 @@ const { default: makeWASocket, useMultiFileAuthState, delay } = require("@whiske
 const pino = require("pino");
 
 async function startPair() {
-    const { state, saveCreds } = await useMultiFileAuthState('session');
+    const { state, saveCreds } = await useMultiFileAuthState('./session');
     const sock = makeWASocket({
         auth: state,
-        logger: pino({ level: "silent" }),
-        printQRInTerminal: false
+        logger: pino({ level: "silent" })
     });
 
     sock.ev.on('creds.update', saveCreds);
 
-    if (!sock.authState.creds.registered) {
-        console.log("Inatafuta kodi ya pairing kwa 255675112349...");
-        await delay(1500);
-        // Namba yako tayari imewekwa hapa
-        let code = await sock.requestPairingCode("255675112349"); 
-        console.log("----------------------------");
-        console.log("KODI YAKO NI: " + code);
-        console.log("----------------------------");
-    }
+    sock.ev.on('connection.update', async (update) => {
+        const { connection } = update;
+        if (connection === "open") {
+            await delay(5000);
+            let session_id = Buffer.from(JSON.stringify(state.creds)).toString("base64");
+            // Hapa bot itatuma Session ID kwenye chat yako ya WhatsApp
+            await sock.sendMessage(sock.user.id, { text: "ZUWA-MD-SESSION;;" + session_id });
+            console.log("SESSION ID IMETUMWA!");
+            process.exit(0);
+        }
+    });
 }
 startPair();
