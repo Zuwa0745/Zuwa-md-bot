@@ -1,3 +1,6 @@
+app.get('/pair', async (req, res) => {
+    res.send("<h1>WEKA NAMBA YAKO:</h1><form action='/get-code'><input name='number' placeholder='255...' required><button>SUBMIT</button></form>");
+});
 const { default: makeWASocket, useMultiFileAuthState, delay } = require("@whiskeysockets/baileys");
 const pino = require("pino");
 const express = require("express");
