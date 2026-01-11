@@ -15,7 +15,7 @@ async function startPair() {
         if (connection === "open") {
             await delay(5000);
             let session_id = Buffer.from(JSON.stringify(state.creds)).toString("base64");
-            // Hapa bot itatuma Session ID kwenye chat yako ya WhatsApp
+            // Hapa bot itatuma Session ID kwenye WhatsApp yako
             await sock.sendMessage(sock.user.id, { text: "ZUWA-MD-SESSION;;" + session_id });
             console.log("SESSION ID IMETUMWA!");
             process.exit(0);
